@@ -60,7 +60,7 @@ n8n controls the poll interval; the node deduplicates by ID so you never see the
 
 - **Templates** are the only way to send a message *outside* the 24 h conversation window. They must be approved by Meta in Qyvo before you can use them.
 - **Send Text** only works inside the 24 h window after the contact's last inbound message. Outside of it the API returns an error — fall back to a template.
-- Phone numbers are normalized server-side, but pass them in **E.164** format (`+33612345678`) for predictable behaviour.
+- Phone numbers are normalized server-side, but pass them in **E.164** format (`+14155550123`) for predictable behaviour.
 
 ## Develop
 

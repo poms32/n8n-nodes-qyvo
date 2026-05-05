@@ -210,7 +210,7 @@ export class Qyvo implements INodeType {
         type: 'string',
         required: true,
         default: '',
-        placeholder: '+33612345678',
+        placeholder: '+14155550123',
         description: 'Contact phone number in E.164 format',
         displayOptions: {
           show: { resource: ['contact'], operation: ['create'] },
@@ -222,7 +222,7 @@ export class Qyvo implements INodeType {
         name: 'phone',
         type: 'string',
         default: '',
-        placeholder: '+33612345678',
+        placeholder: '+14155550123',
         description: 'Required if Contact ID is not provided',
         displayOptions: {
           show: { resource: ['contact'], operation: ['update', 'get', 'addTag', 'removeTag'] },
@@ -339,7 +339,7 @@ export class Qyvo implements INodeType {
         type: 'string',
         required: true,
         default: '',
-        placeholder: '+33612345678',
+        placeholder: '+14155550123',
         description: 'Recipient phone number in E.164 format',
         displayOptions: {
           show: { resource: ['message'] },
@@ -478,7 +478,7 @@ export class Qyvo implements INodeType {
         name: 'phone',
         type: 'string',
         default: '',
-        placeholder: '+33612345678',
+        placeholder: '+14155550123',
         description: 'Required if Contact ID is not provided',
         displayOptions: {
           show: { resource: ['sequence', 'flow'], operation: ['trigger'] },
