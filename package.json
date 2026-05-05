@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-qyvo",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "n8n community nodes for Qyvo — WhatsApp marketing platform for e-commerce. Send templates, manage contacts, trigger sequences and flows.",
   "keywords": [
     "n8n-community-node-package",

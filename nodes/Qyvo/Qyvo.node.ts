@@ -513,50 +513,40 @@ export class Qyvo implements INodeType {
   methods = {
     loadOptions: {
       async getTemplates(this: any) {
-        const response = await this.helpers.httpRequestWithAuthentication.call(
-          this,
-          'qyvoApi',
-          {
-            method: 'GET',
-            url: '/api/v1/dropdowns/templates',
-            json: true,
-          },
-        );
-        return (response as Array<{ id: string; label: string }>).map((t) => ({
-          name: t.label,
-          value: t.id,
-        }));
+        return loadOptionsFor.call(this, '/api/v1/dropdowns/templates');
       },
       async getSequences(this: any) {
-        const response = await this.helpers.httpRequestWithAuthentication.call(
-          this,
-          'qyvoApi',
-          {
-            method: 'GET',
-            url: '/api/v1/dropdowns/sequences',
-            json: true,
-          },
-        );
-        return (response as Array<{ id: string; label: string }>).map((s) => ({
-          name: s.label,
-          value: s.id,
-        }));
+        return loadOptionsFor.call(this, '/api/v1/dropdowns/sequences');
       },
       async getFlows(this: any) {
-        const response = await this.helpers.httpRequestWithAuthentication.call(
-          this,
-          'qyvoApi',
-          {
-            method: 'GET',
-            url: '/api/v1/dropdowns/flows',
-            json: true,
-          },
-        );
-        return (response as Array<{ id: string; label: string }>).map((f) => ({
-          name: f.label,
-          value: f.id,
-        }));
+        return loadOptionsFor.call(this, '/api/v1/dropdowns/flows');
       },
     },
   };
+}
+
+/**
+ * Hit a dropdown endpoint with the credential's base URL and map the response
+ * to n8n's option shape. n8n's httpRequestWithAuthentication does NOT inherit
+ * `requestDefaults.baseURL` from the node description — that only applies to
+ * declarative routing — so we resolve the base URL from credentials manually.
+ */
+async function loadOptionsFor(this: any, path: string) {
+  const credentials = await this.getCredentials('qyvoApi');
+  const baseUrl = (credentials.baseUrl as string)?.replace(/\/$/, '') || 'https://www.qyvo.io';
+
+  const response = await this.helpers.httpRequestWithAuthentication.call(
+    this,
+    'qyvoApi',
+    {
+      method: 'GET',
+      url: `${baseUrl}${path}`,
+      json: true,
+    },
+  );
+
+  return (response as Array<{ id: string; label: string }>).map((item) => ({
+    name: item.label,
+    value: item.id,
+  }));
 }
