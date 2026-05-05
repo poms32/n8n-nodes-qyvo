@@ -1,0 +1,61 @@
+{
+  "name": "n8n-nodes-qyvo",
+  "version": "0.1.0",
+  "description": "n8n community nodes for Qyvo — WhatsApp marketing platform for e-commerce. Send templates, manage contacts, trigger sequences and flows.",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "qyvo",
+    "whatsapp",
+    "marketing",
+    "ecommerce"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.qyvo.io",
+  "author": {
+    "name": "Qyvo",
+    "email": "support@qyvo.io",
+    "url": "https://www.qyvo.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poms32/n8n-nodes-qyvo.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -s"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/QyvoApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Qyvo/Qyvo.node.js",
+      "dist/nodes/QyvoTrigger/QyvoTrigger.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "~8.32.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "*",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
