@@ -215,7 +215,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['create'] },
         },
-        routing: { request: { body: { phone: '={{$value}}' } } },
+        routing: { request: { body: { phone: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Phone Number',
@@ -227,7 +227,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['update', 'get', 'addTag', 'removeTag'] },
         },
-        routing: { request: { body: { phone: '={{$value}}' } } },
+        routing: { request: { body: { phone: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Contact ID',
@@ -238,7 +238,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['update', 'get', 'addTag', 'removeTag'] },
         },
-        routing: { request: { body: { contact_id: '={{$value}}' } } },
+        routing: { request: { body: { contact_id: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Name',
@@ -248,7 +248,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['create', 'update'] },
         },
-        routing: { request: { body: { name: '={{$value}}' } } },
+        routing: { request: { body: { name: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Email',
@@ -259,7 +259,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['create', 'update', 'get'] },
         },
-        routing: { request: { body: { email: '={{$value}}' } } },
+        routing: { request: { body: { email: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Tags',
@@ -271,7 +271,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['create', 'update'] },
         },
-        routing: { request: { body: { tags: '={{$value}}' } } },
+        routing: { request: { body: { tags: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Metadata (JSON)',
@@ -293,7 +293,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['addTag', 'removeTag'] },
         },
-        routing: { request: { body: { tag: '={{$value}}' } } },
+        routing: { request: { body: { tag: '={{$value || undefined}}' } } },
       },
 
       // CONTACT SEARCH
@@ -306,7 +306,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['search'] },
         },
-        routing: { request: { body: { query: '={{$value}}' } } },
+        routing: { request: { body: { query: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Filter by Tag',
@@ -316,7 +316,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['search'] },
         },
-        routing: { request: { body: { tag: '={{$value}}' } } },
+        routing: { request: { body: { tag: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Filter by Email',
@@ -327,7 +327,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['contact'], operation: ['search'] },
         },
-        routing: { request: { body: { email: '={{$value}}' } } },
+        routing: { request: { body: { email: '={{$value || undefined}}' } } },
       },
 
       // ====================================================================
@@ -344,7 +344,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['message'] },
         },
-        routing: { request: { body: { phone: '={{$value}}' } } },
+        routing: { request: { body: { phone: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Message',
@@ -384,18 +384,63 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['message'], operation: ['sendTemplate'] },
         },
-        routing: { request: { body: { language: '={{$value}}' } } },
+        routing: { request: { body: { language: '={{$value || undefined}}' } } },
       },
       {
-        displayName: 'Variables (JSON)',
+        displayName: 'Variables',
         name: 'variables',
-        type: 'json',
-        default: '{}',
-        description: 'Object whose values fill the template body placeholders in order. Example: {"1": "John", "2": "ORDER-1234"}.',
+        type: 'fixedCollection',
+        placeholder: 'Add Variable',
+        typeOptions: { multipleValues: true },
+        default: {},
+        description: 'One row per placeholder defined in the template. The Name dropdown auto-discovers placeholders from the chosen template.',
         displayOptions: {
           show: { resource: ['message'], operation: ['sendTemplate'] },
         },
-        routing: { request: { body: { variables: '={{JSON.parse($value)}}' } } },
+        options: [
+          {
+            displayName: 'Variable',
+            name: 'pair',
+            values: [
+              {
+                displayName: 'Name or ID',
+                name: 'key',
+                type: 'options',
+                default: '',
+                description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+                typeOptions: {
+                  loadOptionsMethod: 'getTemplateVariables',
+                  loadOptionsDependsOn: ['template_id'],
+                },
+              },
+              {
+                displayName: 'Value',
+                name: 'value',
+                type: 'string',
+                default: '',
+              },
+            ],
+          },
+        ],
+        routing: {
+          send: {
+            preSend: [
+              async function (this: any, requestOptions: any) {
+                const raw = this.getNodeParameter('variables', {}) as { pair?: Array<{ key: string; value: string }> };
+                const pairs = raw.pair ?? [];
+                const map: Record<string, string> = {};
+                for (const p of pairs) {
+                  if (p.key) map[p.key] = p.value ?? '';
+                }
+                if (Object.keys(map).length > 0) {
+                  if (!requestOptions.body) requestOptions.body = {};
+                  (requestOptions.body as Record<string, unknown>).variables = map;
+                }
+                return requestOptions;
+              },
+            ],
+          },
+        },
       },
 
       // ====================================================================
@@ -441,7 +486,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['tag'], operation: ['list'] },
         },
-        routing: { request: { body: { name: '={{$value}}' } } },
+        routing: { request: { body: { name: '={{$value || undefined}}' } } },
       },
 
       // ====================================================================
@@ -483,7 +528,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['sequence', 'flow'], operation: ['trigger'] },
         },
-        routing: { request: { body: { phone: '={{$value}}' } } },
+        routing: { request: { body: { phone: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Contact ID',
@@ -494,7 +539,7 @@ export class Qyvo implements INodeType {
         displayOptions: {
           show: { resource: ['sequence', 'flow'], operation: ['trigger'] },
         },
-        routing: { request: { body: { contact_id: '={{$value}}' } } },
+        routing: { request: { body: { contact_id: '={{$value || undefined}}' } } },
       },
       {
         displayName: 'Context (JSON)',
@@ -520,6 +565,11 @@ export class Qyvo implements INodeType {
       },
       async getFlows(this: any) {
         return loadOptionsFor.call(this, '/api/v1/dropdowns/flows');
+      },
+      async getTemplateVariables(this: any) {
+        const templateId = this.getCurrentNodeParameter('template_id') as string;
+        if (!templateId) return [];
+        return loadOptionsFor.call(this, `/api/v1/dropdowns/template-variables?template_id=${encodeURIComponent(templateId)}`);
       },
     },
   };
