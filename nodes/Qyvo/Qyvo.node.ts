@@ -58,37 +58,37 @@ export class Qyvo implements INodeType {
             name: 'Add Tag',
             value: 'addTag',
             action: 'Add a tag to a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/add-tag' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/add-tag' } },
           },
           {
             name: 'Create',
             value: 'create',
             action: 'Create a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/create-contact' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/create-contact' } },
           },
           {
             name: 'Get',
             value: 'get',
             action: 'Get a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/get-contact' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/get-contact' } },
           },
           {
             name: 'Remove Tag',
             value: 'removeTag',
             action: 'Remove a tag from a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/remove-tag' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/remove-tag' } },
           },
           {
             name: 'Search',
             value: 'search',
             action: 'Search contacts',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/search-contacts' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/search-contacts' } },
           },
           {
             name: 'Update',
             value: 'update',
             action: 'Update a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/update-contact' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/update-contact' } },
           },
         ],
         default: 'create',
@@ -108,7 +108,7 @@ export class Qyvo implements INodeType {
             // eslint-disable-next-line n8n-nodes-base/node-param-operation-option-action-miscased
             action: 'Send a free-form text message',
             description: 'Only works inside the 24-hour conversation window. Outside it, send a template instead.',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/send-text-message' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/send-text-message' } },
           },
           {
             name: 'Send Template',
@@ -116,7 +116,7 @@ export class Qyvo implements INodeType {
             // eslint-disable-next-line n8n-nodes-base/node-param-operation-option-action-miscased
             action: 'Send an approved WhatsApp template',
             routing: {
-              request: { method: 'POST', url: '/api/zapier/actions/send-template-message' },
+              request: { method: 'POST', url: '/api/v1/actions/send-template-message' },
             },
           },
         ],
@@ -135,13 +135,13 @@ export class Qyvo implements INodeType {
             name: 'List',
             value: 'list',
             action: 'List templates',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/list-templates' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/list-templates' } },
           },
           {
             name: 'Get',
             value: 'get',
             action: 'Get a template',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/get-template' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/get-template' } },
           },
         ],
         default: 'list',
@@ -159,7 +159,7 @@ export class Qyvo implements INodeType {
             name: 'List',
             value: 'list',
             action: 'List tags',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/list-tags' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/list-tags' } },
           },
         ],
         default: 'list',
@@ -177,7 +177,7 @@ export class Qyvo implements INodeType {
             name: 'Trigger',
             value: 'trigger',
             action: 'Trigger a sequence for a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/trigger-sequence' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/trigger-sequence' } },
           },
         ],
         default: 'trigger',
@@ -195,7 +195,7 @@ export class Qyvo implements INodeType {
             name: 'Trigger',
             value: 'trigger',
             action: 'Trigger a flow for a contact',
-            routing: { request: { method: 'POST', url: '/api/zapier/actions/trigger-flow' } },
+            routing: { request: { method: 'POST', url: '/api/v1/actions/trigger-flow' } },
           },
         ],
         default: 'trigger',
@@ -518,7 +518,7 @@ export class Qyvo implements INodeType {
           'qyvoApi',
           {
             method: 'GET',
-            url: '/api/zapier/dropdowns/templates',
+            url: '/api/v1/dropdowns/templates',
             json: true,
           },
         );
@@ -533,7 +533,7 @@ export class Qyvo implements INodeType {
           'qyvoApi',
           {
             method: 'GET',
-            url: '/api/zapier/dropdowns/sequences',
+            url: '/api/v1/dropdowns/sequences',
             json: true,
           },
         );
@@ -548,7 +548,7 @@ export class Qyvo implements INodeType {
           'qyvoApi',
           {
             method: 'GET',
-            url: '/api/zapier/dropdowns/flows',
+            url: '/api/v1/dropdowns/flows',
             json: true,
           },
         );

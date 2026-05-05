@@ -26,7 +26,7 @@ Then restart n8n.
 2. In n8n, add a new **Qyvo API** credential and paste the token.
 3. Leave **Base URL** as `https://www.qyvo.io` unless you self-host Qyvo.
 
-n8n will hit `GET /api/zapier/me` with the token to verify it.
+n8n will hit `GET /api/v1/me` with the token to verify it.
 
 ## Nodes
 

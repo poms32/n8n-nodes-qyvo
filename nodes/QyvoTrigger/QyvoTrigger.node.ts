@@ -7,10 +7,10 @@ import {
 } from 'n8n-workflow';
 
 const EVENT_ENDPOINTS: Record<string, string> = {
-  newMessageReceived: '/api/zapier/triggers/new-message-received',
-  newCampaignSent: '/api/zapier/triggers/new-campaign-sent',
-  newFlowTriggered: '/api/zapier/triggers/new-flow-triggered',
-  newSequenceTriggered: '/api/zapier/triggers/new-sequence-triggered',
+  newMessageReceived: '/api/v1/triggers/new-message-received',
+  newCampaignSent: '/api/v1/triggers/new-campaign-sent',
+  newFlowTriggered: '/api/v1/triggers/new-flow-triggered',
+  newSequenceTriggered: '/api/v1/triggers/new-sequence-triggered',
 };
 
 export class QyvoTrigger implements INodeType {

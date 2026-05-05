@@ -47,7 +47,7 @@ export class QyvoApi implements ICredentialType {
   test: ICredentialTestRequest = {
     request: {
       baseURL: '={{$credentials.baseUrl}}',
-      url: '/api/zapier/me',
+      url: '/api/v1/me',
     },
   };
 }
